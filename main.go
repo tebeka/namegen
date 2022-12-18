@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -28,6 +30,12 @@ func humanize(name string) string {
 }
 
 func main() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "usage: namegen\n")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
 	rand.Seed(time.Now().Unix())
 	name := namesgenerator.GetRandomName(0)
 	fmt.Println(humanize(name))
