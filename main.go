@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"math/rand"
@@ -10,23 +9,19 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/namesgenerator"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+)
+
+var (
+	enCaser = cases.Title(language.English)
 )
 
 // gallant_antonelli -> Gallant Antonelli
 func humanize(name string) string {
-	i := strings.Index(name, "_")
-	if i < 0 {
-		return name
-	}
+	name = strings.Replace(name, "_", " ", 1)
 
-	var buf bytes.Buffer
-	buf.WriteString(strings.ToUpper(name[:1]))
-	buf.WriteString(name[1:i])
-	buf.WriteByte(' ')
-	buf.WriteString(strings.ToUpper(name[i+1 : i+2]))
-	buf.WriteString(name[i+2:])
-
-	return buf.String()
+	return enCaser.String(name)
 }
 
 func main() {
