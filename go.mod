@@ -3,7 +3,7 @@ module github.com/tebeka/namegen
 go 1.19
 
 require (
-	github.com/docker/docker v20.10.24+incompatible
+	github.com/docker/docker v24.0.7+incompatible
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/text v0.9.0
 )
