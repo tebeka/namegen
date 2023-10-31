@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os/exec"
+	"path"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -29,10 +30,19 @@ func Test_humanize(t *testing.T) {
 	}
 }
 
-func TestExe(t *testing.T) {
-	exe := fmt.Sprintf("%s/namegen", t.TempDir())
+func build(t *testing.T) string {
+	exe := path.Join(t.TempDir(), "namegen")
+	if runtime.GOOS == "windows" {
+		exe += ".exe"
+	}
 	err := exec.Command("go", "build", "-o", exe).Run()
 	require.NoError(t, err)
+
+	return exe
+}
+
+func TestExe(t *testing.T) {
+	exe := build(t)
 
 	cmd := exec.Command(exe)
 	data, err := cmd.CombinedOutput()
@@ -41,9 +51,7 @@ func TestExe(t *testing.T) {
 }
 
 func TestExeHelp(t *testing.T) {
-	exe := fmt.Sprintf("%s/namegen", t.TempDir())
-	err := exec.Command("go", "build", "-o", exe).Run()
-	require.NoError(t, err)
+	exe := build(t)
 
 	cmd := exec.Command(exe, "-h")
 	data, err := cmd.CombinedOutput()
